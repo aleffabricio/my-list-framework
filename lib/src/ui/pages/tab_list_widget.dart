@@ -46,7 +46,7 @@ class _MyTabListState extends State<MyTabList>
         appBar: AppBar(
             title: Image.asset('assets/logo2.png', fit: BoxFit.cover),
             centerTitle: true,
-            backgroundColor: Colors.deepPurple,
+            backgroundColor: Color(0xff6800DC),
             bottom: TabBar(
               controller: _tabController,
               indicatorColor: Colors.white,
@@ -84,7 +84,7 @@ class _MyTabListState extends State<MyTabList>
                       return Center(
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+                              AlwaysStoppedAnimation<Color>(Color(0xff6800DC)),
                         ),
                       );
                     default:
@@ -112,7 +112,7 @@ class _MyTabListState extends State<MyTabList>
                       return Center(
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+                              AlwaysStoppedAnimation<Color>(Color(0xff6800DC)),
                         ),
                       );
                     default:
@@ -140,7 +140,7 @@ class _MyTabListState extends State<MyTabList>
                       return Center(
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Colors.deepPurple),
+                              AlwaysStoppedAnimation<Color>(Color(0xff6800DC)),
                         ),
                       );
                     default:
@@ -203,7 +203,7 @@ class MyCustomCard extends StatelessWidget {
               padding: EdgeInsets.all(10.0),
               decoration: BoxDecoration(
                   border: Border(
-                left: BorderSide(width: 5, color: Colors.deepPurple),
+                left: BorderSide(width: 5, color: Color(0xff6800DC)),
               )),
               child: Column(
                 children: <Widget>[

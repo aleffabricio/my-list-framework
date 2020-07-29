@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
       tagText: 'blocFrwk',
       child: MaterialApp(
         title: 'My List Framework',
-        color: Colors.deepPurple,
+        color: Color(0xff6800DC),
         home: MyTabList(),
         debugShowCheckedModeBanner: false,
       ),
