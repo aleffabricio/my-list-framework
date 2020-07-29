@@ -16,6 +16,7 @@ dependencies:
   bloc_pattern: 2.5.1
   path_provider: 1.6.11
   rxdart: 0.24.0
+  connectivity: 0.4.9
 
 dev_dependencies:
   flutter_test:

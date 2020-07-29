@@ -42,4 +42,13 @@ class AlbumsBloc implements BlocBase {
       return null;
     }
   }
+
+  addErrorConnection() {
+    _albumsBloc.addError('Você está sem rede, ative para o app buscar os dados.');
+  }
+
+  addErrorFile() {
+    _albumsBloc.addError('Ocorreu algum problema na API Rest');
+  }
+
 }

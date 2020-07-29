@@ -42,4 +42,12 @@ class TodosBloc implements BlocBase {
       return null;
     }
   }
+
+  addErrorConnection() {
+    _todosBloc.addError('Você está sem rede, ative para o app buscar os dados.');
+  }
+
+  addErrorFile() {
+    _todosBloc.addError('Ocorreu algum problema na API Rest');
+  }
 }

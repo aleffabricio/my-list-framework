@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:bloc_pattern/bloc_pattern.dart';
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:my_list_framework/src/blocs/albums_bloc.dart';
 import 'package:my_list_framework/src/blocs/posts_bloc.dart';
@@ -14,6 +15,17 @@ import 'dart:io';
 import 'dart:async';
 
 class FileController {
+
+  static StreamSubscription<ConnectivityResult> connect;
+ static final AlbumsBloc blocAlbums =
+  BlocProvider.tag('blocFrwk').getBloc<AlbumsBloc>();
+
+  static final PostsBloc blocPosts =
+  BlocProvider.tag('blocFrwk').getBloc<PostsBloc>();
+
+  static final TodosBloc blocTodos =
+  BlocProvider.tag('blocFrwk').getBloc<TodosBloc>();
+
   static Future<File> getFile({@required nomeFile}) async {
     try {
       final diretorio = await getApplicationDocumentsDirectory();
@@ -57,51 +69,76 @@ class FileController {
   static Future<void> jsonList() async {
     String nameFile = 'jsonList';
 
-    final AlbumsBloc blocAlbums =
-        BlocProvider.tag('blocFrwk').getBloc<AlbumsBloc>();
-
-    final PostsBloc blocPosts =
-        BlocProvider.tag('blocFrwk').getBloc<PostsBloc>();
-
-    final TodosBloc blocTodos =
-        BlocProvider.tag('blocFrwk').getBloc<TodosBloc>();
-
     File file = await getFile(nomeFile: nameFile);
     bool existFile = await file.exists();
 
     if (!existFile) {
-      List<AlbumsEntity> _listAlbums = await blocAlbums.getAlbumsService();
-      List<PostsEntity> _listPosts = await blocPosts.getPostService();
-      List<TodosEntity> _listTodos = await blocTodos.getTodoService();
+      connect?.cancel();
+      if (await isConnected()) {
+        List<AlbumsEntity> _listAlbums = await blocAlbums.getAlbumsService();
+        List<PostsEntity> _listPosts = await blocPosts.getPostService();
+        List<TodosEntity> _listTodos = await blocTodos.getTodoService();
 
-      if (_listAlbums != null &&
-          _listPosts != null &&
-          _listTodos != null &&
-          _listAlbums.isNotEmpty &&
-          _listPosts.isNotEmpty &&
-          _listTodos.isNotEmpty) {
+        if (_listAlbums != null &&
+            _listPosts != null &&
+            _listTodos != null &&
+            _listAlbums.isNotEmpty &&
+            _listPosts.isNotEmpty &&
+            _listTodos.isNotEmpty) {
 
-        JsonListEntity _jsonListEntity = JsonListEntity(
-          albums: _listAlbums,
-          posts: _listPosts,
-          todos: _listTodos
-        );
+          JsonListEntity _jsonListEntity = JsonListEntity(
+              albums: _listAlbums,
+              posts: _listPosts,
+              todos: _listTodos
+          );
 
-        saveData(
-            values: _jsonListEntity,
-            nomeFile: nameFile);
+          saveData(
+              values: _jsonListEntity,
+              nomeFile: nameFile);
+        }else{
+          blocAlbums.addErrorFile();
+          blocPosts.addErrorFile();
+          blocTodos.addErrorFile();
+        }
+      }else{
+        blocAlbums.addErrorConnection();
+        blocPosts.addErrorConnection();
+        blocTodos.addErrorConnection();
+        listenConnect();
       }
     } else {
-      String json =
-      await readData(
-          nomeFile: nameFile);
+      String json = await readData(nomeFile: nameFile);
 
-      final _jsonListEntity =
-      jsonListEntityFromJson(json);
+      final _jsonListEntity = jsonListEntityFromJson(json);
 
       blocAlbums.inAlbums.add(_jsonListEntity.albums);
       blocPosts.inPosts.add(_jsonListEntity.posts);
       blocTodos.inTodos.add(_jsonListEntity.todos);
     }
+  }
+
+  static Future<bool> isConnected() async {
+    try {
+      var connectivityResult = await (Connectivity().checkConnectivity());
+      return connectivityResult == ConnectivityResult.wifi ||
+              connectivityResult == ConnectivityResult.mobile
+          ? true
+          : false;
+    } catch (e) {
+      print('Erro ao consultar status da rede.');
+      return false;
+    }
+  }
+
+ static listenConnect(){
+    connect = Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
+      if(result == ConnectivityResult.wifi ||
+          result == ConnectivityResult.mobile){
+        blocAlbums.inAlbums.add(null);
+        blocPosts.inPosts.add(null);
+        blocTodos.inTodos.add(null);
+        jsonList();
+      }
+    });
   }
 }

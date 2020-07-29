@@ -77,6 +77,14 @@ class _MyTabListState extends State<MyTabList>
                 initialData: [],
                 stream: blocAlbums.outAlbums,
                 builder: (_, snapshot) {
+                  if(snapshot.data == null && snapshot.error == null){
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xff6800DC)),
+                      ),
+                    );
+                  }
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
                     case ConnectionState.waiting:
@@ -96,7 +104,7 @@ class _MyTabListState extends State<MyTabList>
                             listAlbums: snapshot.data);
                       } else {
                         return Center(
-                          child: Text("Erro ao carregar"),
+                          child: Text(snapshot.error),
                         );
                       }
                   }
@@ -105,6 +113,14 @@ class _MyTabListState extends State<MyTabList>
                 initialData: [],
                 stream: blocPosts.outPosts,
                 builder: (_, snapshot) {
+                  if(snapshot.data == null && snapshot.error == null){
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xff6800DC)),
+                      ),
+                    );
+                  }
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
                     case ConnectionState.waiting:
@@ -124,7 +140,7 @@ class _MyTabListState extends State<MyTabList>
                             listPosts: snapshot.data);
                       } else {
                         return Center(
-                          child: Text("Erro ao carregar"),
+                          child: Text(snapshot.error),
                         );
                       }
                   }
@@ -133,6 +149,14 @@ class _MyTabListState extends State<MyTabList>
                 initialData: [],
                 stream: blocTodos.outTodos,
                 builder: (_, snapshot) {
+                  if(snapshot.data == null && snapshot.error == null){
+                    return Center(
+                      child: CircularProgressIndicator(
+                        valueColor:
+                        AlwaysStoppedAnimation<Color>(Color(0xff6800DC)),
+                      ),
+                    );
+                  }
                   switch (snapshot.connectionState) {
                     case ConnectionState.none:
                     case ConnectionState.waiting:
@@ -152,7 +176,7 @@ class _MyTabListState extends State<MyTabList>
                             listTodos: snapshot.data);
                       } else {
                         return Center(
-                          child: Text("Erro ao carregar"),
+                          child: Text(snapshot.error),
                         );
                       }
                   }

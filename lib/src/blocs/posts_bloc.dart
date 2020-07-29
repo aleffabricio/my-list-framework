@@ -42,4 +42,12 @@ class PostsBloc implements BlocBase {
       return null;
     }
   }
+
+  addErrorConnection() {
+    _postsBloc.addError('Você está sem rede, ative para o app buscar os dados.');
+  }
+
+  addErrorFile() {
+    _postsBloc.addError('Ocorreu algum problema na API Rest');
+  }
 }
