@@ -1,6 +1,7 @@
 import 'package:bloc_pattern/bloc_pattern.dart';
 import 'package:flutter/material.dart';
 import 'package:my_list_framework/src/blocs/albums_bloc.dart';
+import 'package:my_list_framework/src/blocs/file_bloc.dart';
 import 'package:my_list_framework/src/blocs/posts_bloc.dart';
 import 'package:my_list_framework/src/blocs/todos_bloc.dart';
 import 'package:my_list_framework/src/core/entity/albums_entity.dart';
@@ -26,9 +27,7 @@ class _MyTabListState extends State<MyTabList>
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3);
-    blocAlbums.getAlbumsService();
-    blocPosts.getPostService();
-    blocTodos.getTodoService();
+    FileController.jsonList();
     super.initState();
   }
 

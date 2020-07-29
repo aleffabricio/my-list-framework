@@ -31,11 +31,15 @@ class TodosBloc implements BlocBase {
   @override
   void removeListener(listener) {}
 
-  Future<void> getTodoService() async {
+  Future<List<TodosEntity>> getTodoService() async {
     try {
-      inTodos.add(await _todoService.getTodos());
+      List<TodosEntity> _listTodos = List<TodosEntity>();
+      _listTodos = await _todoService.getTodos();
+      inTodos.add(_listTodos);
+      return _listTodos;
     } catch (e) {
       _todosBloc.addError(true);
+      return null;
     }
   }
 }

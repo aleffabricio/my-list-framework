@@ -31,11 +31,15 @@ class PostsBloc implements BlocBase {
   @override
   void removeListener(listener) {}
 
-  Future<void> getPostService() async {
+  Future<List<PostsEntity>> getPostService() async {
     try {
-      inPosts.add(await _postService.getPosts());
+      List<PostsEntity> listPosts = List<PostsEntity>();
+      listPosts = await _postService.getPosts();
+      inPosts.add(listPosts);
+      return listPosts;
     } catch (e) {
       _postsBloc.addError(true);
+      return null;
     }
   }
 }

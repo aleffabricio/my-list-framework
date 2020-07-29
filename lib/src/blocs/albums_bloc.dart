@@ -31,11 +31,15 @@ class AlbumsBloc implements BlocBase {
   @override
   void removeListener(listener) {}
 
-  Future<void> getAlbumsService() async {
+  Future<List<AlbumsEntity>> getAlbumsService() async {
     try {
-      inAlbums.add(await _albumsService.getAlbums());
+      List<AlbumsEntity> _listAlbums = List<AlbumsEntity>();
+      _listAlbums = await _albumsService.getAlbums();
+      inAlbums.add(_listAlbums);
+      return _listAlbums;
     } catch (e) {
       _albumsBloc.addError(true);
+      return null;
     }
   }
 }
